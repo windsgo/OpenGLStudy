@@ -6,19 +6,19 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 set(CXX_STANDARD 20)
 
 if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-add_subdirectory(src)
-
 function(print_variable x)
     list(LENGTH ${x} len)
-    if (${len} GREATER 1 AND ${len} LESS 6)
+    if (${len} GREATER 1 AND ${len} LESS 10)
         message(STATUS "[*PRINT*] \${${x}}:")
         foreach(_x ${${x}})
             message(STATUS "          ${_x}")
@@ -33,3 +33,5 @@ print_variable(OPENGL_LIBRARIES)
 print_variable(GLEW_INCLUDE_DIR)
 print_variable(GLEW_LIBRARIES)
 
+add_subdirectory(src)
+add_subdirectory(test)

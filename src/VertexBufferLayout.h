@@ -56,6 +56,7 @@ public:
     }
 
 #if defined(__GNUC__)
+private:
     template <typename T>
     void _push(identity<T>, unsigned int count)
     {
@@ -80,6 +81,7 @@ public:
         m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE);
     }
 #elif defined(_MSC_VER)
+public:
     // windows下可以用以下的特例方法
     template <>
     void Push<float>(unsigned int count)
@@ -103,6 +105,7 @@ public:
     }
 #endif
 
+public:
     inline const std::vector<VertexBufferElement> &GetElements() const
     {
         return m_Elements;

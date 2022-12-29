@@ -1,4 +1,17 @@
-add_executable(test1 test1.cpp Renderer.cpp VertexBuffer.cpp IndexBuffer.cpp VertexArray.cpp VertexBufferLayout.cpp)
-target_include_directories(test1 PUBLIC ${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} .)
-target_link_libraries(test1 glfw ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
+aux_source_directory(. MYGL_SRCS)
+print_variable(MYGL_SRCS)
+add_library(mygl 
+    SHARED
+    ${MYGL_SRCS}
+)
+target_include_directories(mygl PUBLIC 
+    ${OPENGL_INCLUDE_DIR}
+    ${GLEW_INCLUDE_DIR} 
+    .
+)
+target_link_libraries(mygl 
+    glfw 
+    ${OPENGL_LIBRARIES} 
+    ${GLEW_LIBRARIES}
+)
 
