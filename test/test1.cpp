@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "GlobalFunctions.h"
 #include "Renderer.h"
 #include "Shader.h"
 
@@ -95,22 +96,21 @@ int main(int argc, char *argv[])
         vb.UnBind();
         shader.UnBind();
 
+        Renderer renderer;
+
         float r = 0.0f;
         float increment = 0.01f;
 
         while (!glfwWindowShouldClose(window))
         {
-            GLCall(glClear(GL_COLOR_BUFFER_BIT));
+            renderer.Clear();
 
             // do things below
-
             shader.Bind();
             shader.SetUniform4f("u_Color", r, 1, 0, 0.6);
 
-            va.Bind();
-            ib.Bind();
+            renderer.Draw(va, ib, shader);
 
-            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // using 6 indices
 
             if (r > 1.0f)
                 increment = -0.01f;

@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Renderer.h"
+#include "GlobalFunctions.h"
 #include <type_traits>
 
 struct VertexBufferElement

@@ -1,31 +1,20 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <iostream>
+#include "GlobalFunctions.h"
 
-#define FMT_NONE "\033[0m"
-#define FMT_RED "\033[31m"
-#define FMT_GREEN "\033[32m"
-#define FMT_YELLOW "\033[33m"
-#define FMT_BLUE "\033[34m"
-#define FMT_BOLD "\033[1m"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
 
-#define ASSERT(x)                                                               \
-    if (!(x))                                                                   \
-    {                                                                           \
-        std::cout                                                               \
-            << FMT_BOLD << FMT_RED << "ASSERTION FAILED!" << FMT_NONE           \
-            << " -> ASSERT(" << FMT_RED << #x << FMT_NONE << ")\n";             \
-        std::cout                                                               \
-            << "    in line " << FMT_BOLD << FMT_YELLOW << __LINE__ << FMT_NONE \
-            << ", " << __PRETTY_FUNCTION__ << std::endl;                        \
-        exit(1);                                                                \
-    }
+class Renderer
+{
+private:
+    /* data */
 
-#define GLCall(x)   \
-    GLClearError(); \
-    x;              \
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__));
+public:
+    Renderer(/* args */);
+    ~Renderer();
 
-void GLClearError();
-bool GLLogCall(const char *function, const char *file, int line);
+    void Clear() const;
+    void Draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) const;
+};
