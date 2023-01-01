@@ -2,6 +2,9 @@
 
 #include <GL/glew.h>
 #include <iostream>
+#include "Logger.h"
+
+#define Logger util::Logger::getInstance()
 
 #define FMT_NONE "\033[0m"
 #define FMT_RED "\033[31m"

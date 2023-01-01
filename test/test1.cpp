@@ -9,10 +9,13 @@
 #include "GlobalFunctions.h"
 #include "Renderer.h"
 #include "Shader.h"
+#include "Texture.h"
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+
+#include "Logger.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,12 +23,12 @@ int main(int argc, char *argv[])
 
     if (!glfwInit())
     {
-        std::cout << "glfwInit()" << FMT_BOLD << FMT_RED << " failed" << FMT_NONE << std::endl;
+        Logger->error("glfwInit() failed");
         return -1;
     }
     else
     {
-        std::cout << "glfwInit()" << FMT_BOLD << FMT_GREEN << " success" << FMT_NONE << std::endl;
+        Logger->info("glfwInit() success");
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -36,12 +39,12 @@ int main(int argc, char *argv[])
     if (!window)
     {
         glfwTerminate();
-        std::cout << "glfwCreateWindow()" << FMT_BOLD << FMT_RED << " failed" << FMT_NONE << std::endl;
+        Logger->error("glfwTerminate() failed");
         return -1;
     }
     else
     {
-        std::cout << "glfwCreateWindow()" << FMT_BOLD << FMT_GREEN << " success" << FMT_NONE << std::endl;
+        Logger->info("glfwTerminate() success");
     }
 
     // make openGL context
@@ -51,37 +54,42 @@ int main(int argc, char *argv[])
 
     // init glew (wraper of gl funcs) after glfw makes openGL context
     auto ret = glewInit();
-    std::cout << "glewInit() does" << (ret == GLEW_OK ? "" : "n't") << " return GLEW_OK" << std::endl;
+    Logger->debug("glewInit() does", (ret == GLEW_OK ? "" : "n't"), " return GLEW_OK");
     if (ret != GLEW_OK)
     {
-        std::cout << "glewInit()" << FMT_BOLD << FMT_RED << " failed" << FMT_NONE << std::endl;
+        Logger->error("glewInit() failed");
     }
     else
     {
-        std::cout << "glewInit()" << FMT_BOLD << FMT_GREEN << " success" << FMT_NONE << std::endl;
+        Logger->info("glewInit() success");
     }
 
-    std::cout << "OpenGL Version: " << FMT_BOLD << FMT_GREEN << glGetString(GL_VERSION) << FMT_NONE << std::endl;
+    Logger->debug("OpenGL Version: ", glGetString(GL_VERSION));
 
     // draw
 
     {
         float positions[] = {
-            -0.5f, -0.5f,
-            0.5f, -0.5f,
-            0.5f, 0.5f,
-            -0.5f, 0.5f};
+            -0.5f, -0.5f, 0.0f, 0.0f,
+             0.5f, -0.5f, 1.0f, 0.0f,
+             0.5f,  0.5f, 1.0f, 1.0f,
+            -0.5f,  0.5f, 0.0f, 1.0f
+        };
 
         unsigned int indices[] = {
             0, 1, 2,
             2, 3, 0};
 
+        GLCall(glEnable(GL_BLEND));
+        GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)); //透明渲染方式
+
         // allocate on stack 
         // automatically destructed at end of the scope
 
         VertexArray va;
-        VertexBuffer vb{positions, 4 * 2 * sizeof(float)}; // data, size
+        VertexBuffer vb{positions, 4 * 4 * sizeof(float)}; // data, size
         VertexBufferLayout layout;
+        layout.Push<float>(2);
         layout.Push<float>(2);
         va.AddBuffer(vb, layout);
 
@@ -90,6 +98,10 @@ int main(int argc, char *argv[])
         Shader shader{"res/shaders/Basic.shader"};
         shader.Bind();
         shader.SetUniform4f("u_Color", 1, 1, 0, 1);
+
+        Texture texture("res/textures/default256.png");
+        texture.Bind(0);
+        shader.SetUniform1i("u_Texture", 0);
 
         va.UnBind();
         ib.UnBind();
