@@ -8,9 +8,9 @@ Texture::Texture(const std::string& path)
     m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
 
     if (m_LocalBuffer == nullptr)
-        Logger->warning("Load texture file: ", FMT_BLUE, m_FilePath, FMT_YELLOW, FMT_BOLD," failed");
+        Logger->warning("Load texture file: ", FMT_BLUE + m_FilePath, STR_FAILED);
     else
-        Logger->info("Load texture file: ", FMT_BLUE, m_FilePath, FMT_GREEN, FMT_BOLD, " success");
+        Logger->info("Load texture file: ", FMT_BLUE + m_FilePath, STR_SUCCESS);
 
     GLCall(glGenTextures(1, &m_RendererID));
     GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));

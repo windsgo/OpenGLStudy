@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
 
     if (!glfwInit())
     {
-        Logger->error("glfwInit() failed");
+        Logger->error("glfwInit() ", STR_FAILED);
         return -1;
     }
     else
     {
-        Logger->info("glfwInit() success");
+        Logger->info("glfwInit() ", STR_SUCCESS);
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -39,12 +39,12 @@ int main(int argc, char *argv[])
     if (!window)
     {
         glfwTerminate();
-        Logger->error("glfwTerminate() failed");
+        Logger->error("glfwTerminate() ", STR_FAILED);
         return -1;
     }
     else
     {
-        Logger->info("glfwTerminate() success");
+        Logger->info("glfwTerminate() ", STR_SUCCESS);
     }
 
     // make openGL context
@@ -54,17 +54,17 @@ int main(int argc, char *argv[])
 
     // init glew (wraper of gl funcs) after glfw makes openGL context
     auto ret = glewInit();
-    Logger->debug("glewInit() does", (ret == GLEW_OK ? "" : "n't"), " return GLEW_OK");
+    Logger->info("glewInit() does", (ret == GLEW_OK ? "" : "n't"), " return GLEW_OK");
     if (ret != GLEW_OK)
     {
-        Logger->error("glewInit() failed");
+        Logger->error("glewInit() ", STR_FAILED);
     }
     else
     {
-        Logger->info("glewInit() success");
+        Logger->info("glewInit() ", STR_SUCCESS);
     }
 
-    Logger->debug("OpenGL Version: ", glGetString(GL_VERSION));
+    Logger->info("OpenGL Version: ", FMT_GREEN + std::string((char*)glGetString(GL_VERSION)));
 
     // draw
 

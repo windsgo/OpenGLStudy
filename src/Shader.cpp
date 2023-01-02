@@ -135,10 +135,7 @@ int Shader::GetUniformLocation(const std::string &name)
     GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
     if (location == -1)
     {
-        std::cout << FMT_BOLD << FMT_YELLOW << "[Warning] " << FMT_NONE
-                  << FMT_YELLOW << "uniform variable " << FMT_NONE
-                  << FMT_BOLD << FMT_BLUE << name << FMT_NONE
-                  << FMT_YELLOW " does not exist!" << FMT_NONE << std::endl;
+        Logger->warning("uniform variable ", FMT_BOLD FMT_BLUE + name, " does not exist!");
     }
 
     m_UniformLocationCache[name] = location;
