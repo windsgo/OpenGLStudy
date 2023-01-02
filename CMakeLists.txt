@@ -28,7 +28,7 @@ function(print_variable x)
     endif()
 endfunction()
 
-print_variable(OPENGL_INCLUDE_DIR, 1)
+print_variable(OPENGL_INCLUDE_DIR)
 print_variable(OPENGL_LIBRARIES)
 print_variable(GLEW_INCLUDE_DIR)
 print_variable(GLEW_LIBRARIES)
