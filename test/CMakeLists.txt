@@ -6,10 +6,12 @@ target_include_directories(test1 PUBLIC
     ${GLEW_INCLUDE_DIR} 
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/util
+    ${VENDOR_INCLUDE_DIR}
 )
 target_link_libraries(test1 
     mygl 
     stb_image
+    # glm::glm_static
     glfw 
     ${OPENGL_LIBRARIES} 
     ${GLEW_LIBRARIES}

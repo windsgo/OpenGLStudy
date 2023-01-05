@@ -17,6 +17,9 @@
 
 #include "Logger.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 int main(int argc, char *argv[])
 {
     GLFWwindow *window;
@@ -31,9 +34,9 @@ int main(int argc, char *argv[])
         Logger->info("glfwInit() ", STR_SUCCESS);
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(640, 480, "Hello world", NULL, NULL);
     if (!window)
@@ -95,9 +98,13 @@ int main(int argc, char *argv[])
 
         IndexBuffer ib{indices, 2 * 3}; // data, count
 
+        // 投影矩阵，定义了窗口的边界坐标
+        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
         Shader shader{"res/shaders/Basic.shader"};
         shader.Bind();
         shader.SetUniform4f("u_Color", 1, 1, 0, 1);
+        shader.SetUniformMat4f("u_MVP", proj); // 传递投影矩阵，GPU中进行计算
 
         Texture texture("res/textures/default256.png");
         texture.Bind(0);

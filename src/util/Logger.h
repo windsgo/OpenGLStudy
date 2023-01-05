@@ -46,7 +46,7 @@ private:
 
     template <typename ...Args>
     void log(LogLevel level, Args&&... args) {
-        std::lock_guard locker(_mutex);
+        std::lock_guard<std::mutex> locker(_mutex);
     
         std::stringstream ss;
 
